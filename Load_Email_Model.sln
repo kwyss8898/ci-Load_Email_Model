@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "Load_Email_Model", "Load_Email_Model\Load_Email_Model.dtproj", "{633B1796-83A9-4F69-8672-B99ED7E91063}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{633B1796-83A9-4F69-8672-B99ED7E91063}.Development|Default.ActiveCfg = Development
+		{633B1796-83A9-4F69-8672-B99ED7E91063}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A39AD3F4-678B-4206-95CD-F26BCC4AE00C}
+	EndGlobalSection
+EndGlobal
