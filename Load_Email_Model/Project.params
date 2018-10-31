@@ -163,7 +163,7 @@
       <SSIS:Property
         SSIS:Name="Sensitive">0</SSIS:Property>
       <SSIS:Property
-        SSIS:Name="Value">16</SSIS:Property>
+        SSIS:Name="Value">19</SSIS:Property>
       <SSIS:Property
         SSIS:Name="DataType">9</SSIS:Property>
     </SSIS:Properties>
@@ -289,7 +289,7 @@
       <SSIS:Property
         SSIS:Name="Sensitive">0</SSIS:Property>
       <SSIS:Property
-        SSIS:Name="Value">etl.SFMC_Load_Campaigns</SSIS:Property>
+        SSIS:Name="Value">etl.Zeta_Load_Campaigns</SSIS:Property>
       <SSIS:Property
         SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>
@@ -310,7 +310,7 @@
       <SSIS:Property
         SSIS:Name="Sensitive">0</SSIS:Property>
       <SSIS:Property
-        SSIS:Name="Value">etl.SFMC_Load_Segments</SSIS:Property>
+        SSIS:Name="Value">etl.Zeta_Load_Segments</SSIS:Property>
       <SSIS:Property
         SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>
@@ -331,7 +331,7 @@
       <SSIS:Property
         SSIS:Name="Sensitive">0</SSIS:Property>
       <SSIS:Property
-        SSIS:Name="Value">etl.SFMC_Load_FactCampaignEmailDetail</SSIS:Property>
+        SSIS:Name="Value">etl.Zeta_Load_FactCampaignEmailDetail</SSIS:Property>
       <SSIS:Property
         SSIS:Name="DataType">18</SSIS:Property>
     </SSIS:Properties>

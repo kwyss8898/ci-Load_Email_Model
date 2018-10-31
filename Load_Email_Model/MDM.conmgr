@@ -4,11 +4,13 @@
   DTS:DTSID="{84ac641d-632a-4d27-8371-716f127f4aef}"
   DTS:CreationName="OLEDB">
   <DTS:PropertyExpression
+    DTS:Name="ConnectionString">REPLACE(  @[$Project::DW_ConnectionString], @[$Project::DW_InitialCatalog] , @[$Project::MDM_Catalog]  )</DTS:PropertyExpression>
+  <DTS:PropertyExpression
     DTS:Name="InitialCatalog">@[$Project::MDM_Catalog]</DTS:PropertyExpression>
   <DTS:PropertyExpression
     DTS:Name="ServerName">@[$Project::DW_ServerName]</DTS:PropertyExpression>
   <DTS:ObjectData>
     <DTS:ConnectionManager
-      DTS:ConnectionString="Data Source=vm-db-dev-01.ssbinfo.com;Initial Catalog=SSB_MDM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      DTS:ConnectionString="Data Source=vm-ebg-dw-p2.ssbinfo.com;Initial Catalog=MDM;Provider=SQLNCLI11.1;Auto Translate=False;" />
   </DTS:ObjectData>
 </DTS:ConnectionManager>
