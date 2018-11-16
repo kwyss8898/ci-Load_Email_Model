@@ -11,11 +11,56 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="LoadEmailModel"
   DTS:PackageType="5"
-  DTS:VersionBuild="187"
-  DTS:VersionGUID="{E31B2F54-6EB7-42D8-837B-1F1BE351DC29}">
+  DTS:VersionBuild="222"
+  DTS:VersionGUID="{64696B46-7F98-4DD4-A8BE-524B0B694F18}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9514DB35-29CB-4D01-84AE-34F6C140A68B}"
+      DTS:ObjectName="DW">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">(ReplaceNull(@[User::DB_UserName], "") == "" ? @[User::DW_ConnectionString]  : Replace( @[User::DW_ConnectionString] , "Integrated Security=SSPI;" ,"User ID=" + @[User::DB_UserName] + ";Password=" +  @[User::DB_Password] + ";"))</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=vm-db-dev-01.ssbinfo.com;Initial Catalog=SSB_CLIENT_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MDM]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+      DTS:ObjectName="MDM">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">Replace( (ReplaceNull(@[User::DB_UserName], "") == "" ? @[User::DW_ConnectionString]  : Replace( @[User::DW_ConnectionString] , "Integrated Security=SSPI;" ,"User ID=" + @[User::DB_UserName] + ";Password=" +  @[User::DB_Password] + ";")),  @[User::DBName],  @[User::MDMCatalog])</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=vm-db-dev-01.ssbinfo.com;Initial Catalog=MDM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ssbmetadata]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{EE70D542-5A81-4106-B110-7BCE506C5130}"
+      DTS:ObjectName="ssbmetadata">
+      <DTS:PropertyExpression
+        DTS:Name="Password">@[User::SSBMetaData_Password]</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="ServerName">@[User::SSBMetaData_Server]</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="UserName">@[User::SSBMetaData_Username]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=ssbmetadata.database.windows.net;User ID=svcETL;Initial Catalog=SSBRPProduction;Persist Security Info=True;Application Name=SSIS-LoadEmailModel-{EE70D542-5A81-4106-B110-7BCE506C5130}ssbmetadata.database.windows.net.svcETL;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAN69hR85qfUyE1WaZE7hnaQAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAdXJ5+Ni7xtoj3I6RDr5hOOgesqlUpSlx64jKKF+WCIwAAAAAOgAAAAAIAACAAAADfzsFHxGGYpMWu7Tv4GWIGPRiA685iBsOlpvTMYMG14iAAAABS7Sa8dtUOnS3DxBbZWiB7dDyIjYuiZllZzJNcpmD0FkAAAABWdn1xFv4+15eG5n+NOB04pWzge4k0XI9ooL1wYaApx2NhSrf/TqULRbHDyWFgtrIMvDqmgGdlEtNt6ZzL/4Tj</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[SSISDB]"
       DTS:CreationName="OLEDB"
@@ -30,9 +75,121 @@
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{B58E11E1-673D-4726-A20E-19F5C24F348B}"
+      DTS:DTSID="{F86E3C05-2F1D-4490-BF61-49F2F3F13E07}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ClientName">
+      <DTS:VariableValue
+        DTS:DataType="8">SSB_CLIENT_DEV</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8A9E05E3-F044-4738-8A64-C9835A73ECCE}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DBName">
+      <DTS:VariableValue
+        DTS:DataType="8">SSB_CLIENT_DEV</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{93A3945E-55C9-4459-B6A3-38269F840979}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DB_Password">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A5FD018C-C927-430E-A462-1E9F91EA6C74}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DB_UserName">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C890020C-3992-4897-86A6-E39F575CF144}"
       DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::CampaignType]"
+      DTS:Expression="&quot;Data Source=&quot; + @[User::FQDN] + &quot;;Initial Catalog=&quot; + @[User::DBName] + &quot;;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="DW_ConnectionString">
+      <DTS:VariableValue
+        DTS:DataType="8">Data Source=vm-db-dev-01.ssbinfo.com;Initial Catalog=SSB_CLIENT_DEV;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8ABD4DEE-5DFD-40A2-B9B2-F37CFDF7C5DD}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="EmailModelSourceID">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B54B505A-CBCA-4B67-B4BF-A4AA27A43450}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="FQDN">
+      <DTS:VariableValue
+        DTS:DataType="8">vm-db-dev-01.ssbinfo.com</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{EF340769-F06B-495B-8048-B10724EC0E33}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MDMCatalog">
+      <DTS:VariableValue
+        DTS:DataType="8">MDM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9C22D3E8-04DC-446C-9436-EE91F18B38D5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceSystem">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{6AF78DD7-3644-4A9C-8C04-F1BEDF6323C3}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SSBMetaData_Password">
+      <DTS:VariableValue
+        DTS:DataType="8">ql^$RwSPyCwAK6s</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5FAAC519-7EF9-4F4C-B32E-DE5D9E3CF819}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SSBMetaData_Server">
+      <DTS:VariableValue
+        DTS:DataType="8">ssbmetadata.database.windows.net</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F7744BFA-9808-4E07-A5F8-BAF06EBA098B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SSBMetaData_Username">
+      <DTS:VariableValue
+        DTS:DataType="8">svcETL</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B58E11E1-673D-4726-A20E-19F5C24F348B}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vCampaignType">
@@ -42,8 +199,6 @@
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{4FECB8AC-63C4-49F8-9D9C-A2FFA5740135}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::EmailField]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vEmailField">
@@ -52,9 +207,25 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
+      DTS:DTSID="{7A523218-D535-4D00-80AD-10C66818A093}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="vIncrementalDaysToLoad">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9888D081-DDB5-4164-A81E-EFA00F2CDDD9}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vListTblName">
+      <DTS:VariableValue
+        DTS:DataType="8">ods.vw_Load_email_DimList__Adobe</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
       DTS:DTSID="{DE744D9B-9B2A-4B0A-AF63-9F2601336BCF}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::LoadCampaignSproc]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vLoadCampaignSproc">
@@ -63,9 +234,17 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
+      DTS:DTSID="{73169C29-0082-473D-847E-DD2DC623E3C1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vLoadEmailListSproc">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
       DTS:DTSID="{8D5C5C04-9058-4981-A0E4-D6044B99182B}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::LoadFCEDSproc]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vLoadFCEDSproc">
@@ -119,9 +298,26 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
+      DTS:DTSID="{A74C5356-B259-458E-8433-11196F4007AA}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="vLoadHistorical">
+      <DTS:VariableValue
+        DTS:DataType="11">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7062AEF3-5309-4B5B-AC37-976AEB419E0D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vLoadListsSproc">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
       DTS:DTSID="{AFFB7940-3049-4B19-BCB4-839939C53607}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::LoadSegmentSproc]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vLoadSegmentSproc">
@@ -131,8 +327,6 @@
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{786F1E18-7433-4E83-9220-690CA8FD57DF}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::ODSCampaignTblName]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vODSCampaignTblName">
@@ -142,8 +336,6 @@
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{E49C10AD-36F1-4C34-926D-A71E35A64705}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::ODSFCEDTblName]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vODSFCEDTblName">
@@ -153,8 +345,6 @@
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{60A5854D-2499-4032-9F75-2359FC841263}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::ODSSegmentTblName]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vODSSegmentTblName">
@@ -164,8 +354,6 @@
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{DBF2E78B-3994-4717-89AB-E94A087A68DA}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::ODSResponseTblName]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vProdTblName">
@@ -174,20 +362,43 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
+      DTS:DTSID="{75C77B42-BD51-4DF0-8E80-7C3C603CA996}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="vRunSetupScript">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
       DTS:DTSID="{106C39DD-7DA1-49D3-B5E3-7B30D9F5FC9F}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::LoadHistorical]  ? (DT_DBDATE) &quot;1/1/1900&quot; : DATEADD( &quot;day&quot;, - @[$Project::LoadDays] , @[System::StartTime]  )"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vRunTime">
       <DTS:VariableValue
-        DTS:DataType="7">10/10/2018 2:43:32 PM</DTS:VariableValue>
+        DTS:DataType="7">11/6/2018 7:34:00 AM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F9E251FB-864D-4BC6-8647-44BAFE4ECBF2}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vSetupScript">
+      <DTS:VariableValue
+        DTS:DataType="8">etl.Adobe_Setup</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{BB927864-F481-44D3-8EB8-0FCF83352E0D}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vSubscriptionTblName">
+      <DTS:VariableValue
+        DTS:DataType="8">ods.vw_Load_Adobe</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{585CD9A3-0B6F-4FBB-A397-3EBC2C6521FD}"
-      DTS:EvaluateAsExpression="True"
-      DTS:Expression="@[$Project::TmpTableName]"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="vTmpTableName">
@@ -196,6 +407,119 @@
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Get Parameters"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7D0446B0-31E6-4514-A9D8-616DDFEAEEC5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get Parameters"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"
+select cast(b.emailModelSourceID as varchar(50)), SourceSystem, LoadCampaignSproc, LoadSegmentSproc, LoadFCEDSproc, LoadListsSproc, LoadEmailListSproc, EmailField, Isnull(ODSCampaignTblNameOverride, ODSCampaignTblName) as odsCampaignTblName, isnull(ODSSegmentTblNameOverride, ODSSegmentTblname) as ODSSegmentTblName, ODSFCEDTblName, isnull(OdsResponseTblNameOverride, ODSResponseTblName) as ODSResponseTblName, ProcessingTmpTblName, isnull(campaigntype, DefaultCampaignType) as CampaignType,  clientname,  IncrementalNumDaystoLoad, LoadHistorical, MDMCatalog, DBName,  FQDN, username, encryptedpassword, RunSetupScript, SetupScript, ListTblName, SubscriptionTblName, case when e.lastrundatetime is not null then DateAdd(day, -IncrementalNumDaystoLoad, isnull(e.lastrundatetime, '1/1/1900')) else '1/1/1900' end as RunTime 
+from config.EmailModelLoadTenant a
+inner join config.EmailModelSource b
+on a.emailModelSourceid = b.emailmodelsourceid
+inner join tenantdatasource c
+on a.Tenantdatasourceid = c.tenantdatasourceid
+inner join server d
+on c.serverid = d.serverid
+ left join config.EmailModelLoadTracking e
+on a.emailmodelloadtenantid = e.emailmodelloadtenantid
+where a.EmailModelLoadTenantId = '" +  @[$Project::EmailModelLoadTenantId] + "'"</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{EE70D542-5A81-4106-B110-7BCE506C5130}"
+          SQLTask:SqlStatementSource="&#xA;select cast(b.emailModelSourceID as varchar(50)), SourceSystem, LoadCampaignSproc, LoadSegmentSproc, LoadFCEDSproc, LoadListsSproc, LoadEmailListSproc, EmailField, Isnull(ODSCampaignTblNameOverride, ODSCampaignTblName) as odsCampaignTblName, isnull(ODSSegmentTblNameOverride, ODSSegmentTblname) as ODSSegmentTblName, ODSFCEDTblName, isnull(OdsResponseTblNameOverride, ODSResponseTblName) as ODSResponseTblName, ProcessingTmpTblName, isnull(campaigntype, DefaultCampaignType) as CampaignType,  clientname,  IncrementalNumDaystoLoad, LoadHistorical, MDMCatalog, DBName,  FQDN, username, encryptedpassword, RunSetupScript, SetupScript, ListTblName, SubscriptionTblName, case when e.lastrundatetime is not null then DateAdd(day, -IncrementalNumDaystoLoad, isnull(e.lastrundatetime, '1/1/1900')) else '1/1/1900' end as RunTime &#xA;from config.EmailModelLoadTenant a&#xA;inner join config.EmailModelSource b&#xA;on a.emailModelSourceid = b.emailmodelsourceid&#xA;inner join tenantdatasource c&#xA;on a.Tenantdatasourceid = c.tenantdatasourceid&#xA;inner join server d&#xA;on c.serverid = d.serverid&#xA; left join config.EmailModelLoadTracking e&#xA;on a.emailmodelloadtenantid = e.emailmodelloadtenantid&#xA;where a.EmailModelLoadTenantId = '17448A73-3C3F-47C8-8F95-C2FCA66C5D24'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="2"
+            SQLTask:DtsVariableName="User::vLoadCampaignSproc" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="3"
+            SQLTask:DtsVariableName="User::vLoadSegmentSproc" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="4"
+            SQLTask:DtsVariableName="User::vLoadFCEDSproc" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="5"
+            SQLTask:DtsVariableName="User::vLoadListsSproc" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="6"
+            SQLTask:DtsVariableName="User::vLoadEmailListSproc" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="7"
+            SQLTask:DtsVariableName="User::vEmailField" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="8"
+            SQLTask:DtsVariableName="User::vODSCampaignTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="9"
+            SQLTask:DtsVariableName="User::vODSSegmentTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="10"
+            SQLTask:DtsVariableName="User::vODSFCEDTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="11"
+            SQLTask:DtsVariableName="User::vProdTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="12"
+            SQLTask:DtsVariableName="User::vTmpTableName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="13"
+            SQLTask:DtsVariableName="User::vCampaignType" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::EmailModelSourceID" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="1"
+            SQLTask:DtsVariableName="User::SourceSystem" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="14"
+            SQLTask:DtsVariableName="User::ClientName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="15"
+            SQLTask:DtsVariableName="User::vIncrementalDaysToLoad" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="16"
+            SQLTask:DtsVariableName="User::vLoadHistorical" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="17"
+            SQLTask:DtsVariableName="User::MDMCatalog" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="18"
+            SQLTask:DtsVariableName="User::DBName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="19"
+            SQLTask:DtsVariableName="User::FQDN" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="20"
+            SQLTask:DtsVariableName="User::DB_UserName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="21"
+            SQLTask:DtsVariableName="User::DB_Password" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="22"
+            SQLTask:DtsVariableName="User::vRunSetupScript" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="23"
+            SQLTask:DtsVariableName="User::vSetupScript" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="24"
+            SQLTask:DtsVariableName="User::vListTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="25"
+            SQLTask:DtsVariableName="User::vSubscriptionTblName" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="26"
+            SQLTask:DtsVariableName="User::vRunTime" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Load email schema"
       DTS:CreationName="STOCK:SEQUENCE"
@@ -219,7 +543,7 @@
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{2F80D7AA-FA8D-4470-97C4-DA685BACED1C}"
+              SQLTask:Connection="{9514DB35-29CB-4D01-84AE-34F6C140A68B}"
               SQLTask:SqlStatementSource="drop table if exists #tmpEmailStatus;&#xA;&#xA;with lastactivity as (&#xA;select dimEmailID, max(activitydatetime) as lastactivitydatetime from email.factcampaignemaildetail a&#xA;inner join email.DimCampaignActivityType b&#xA;on a.DimCampaignActivityTypeId = b.DimCampaignActivityTypeId&#xA;where b.dimemailstatusid is not null&#xA;group by dimemailid)&#xA;select a.dimemailid, max(dimemailstatusid) as lastemailstatus &#xA;into #tmpEmailStatus&#xA;from email.FactCampaignEmailDetail a&#xA;inner join email.DimCampaignActivityType b&#xA;on a.DimCampaignActivityTypeId = b.DimCampaignActivityTypeId&#xA;inner join lastactivity c&#xA;on a.dimemailid = c.DimEmailId and a.ActivityDateTime = c.lastactivitydatetime&#xA;group by a.DimEmailId;&#xA;&#xA;drop table if exists #tmpUpdates;&#xA;&#xA;select a.dimemailid, a.lastemailstatus &#xA;into #tmpUpdates&#xA;from #tmpEmailStatus a&#xA;inner join email.DimEmail b&#xA;on a.dimemailid = b.dimemailid&#xA;where a.lastemailstatus != b.DimEmailStatusID&#xA;&#xA;Update a&#xA;set dimemailstatusid = lastemailstatus&#xA;from email.DimEmail a&#xA;inner join #tmpUpdates b&#xA;on a.dimemailid = b.dimemailid" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
@@ -235,12 +559,12 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"Exec " + @[User::vLoadCampaignSproc] + " @clientdb = '" + @[$Project::DW_InitialCatalog] + "',
-@odsTblName = '" + @[User::vODSCampaignTblName] +"', @runtime = '" + (DT_WSTR, 14) (DT_DBDATE)  @[User::vRunTime] + "', @campaigntype = '" +  @[$Project::CampaignType] + "', @channeltype = 'Email'"</DTS:PropertyExpression>
+            DTS:Name="SqlStatementSource">"Exec " + @[User::vLoadCampaignSproc] + " @clientdb = '" + @[User::DBName]   + "',
+@odsTblName = '" + @[User::vODSCampaignTblName] +"', @runtime = '" + (DT_WSTR, 14) (DT_DBDATE)  @[User::vRunTime] + "', @campaigntype = '" +  @[User::vCampaignType]  + "', @channeltype = 'Email'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="Exec etl.Zeta_Load_Campaigns @clientdb = 'EBGPROD',&#xA;@odsTblName = 'ods.zeta_response_public', @runtime = '2018-10-10', @campaigntype = 'Public', @channeltype = 'Email'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="Exec etl.Zeta_Load_Campaigns @clientdb = 'SSB_CLIENT_DEV',&#xA;@odsTblName = 'ods.zeta_response_public', @runtime = '2018-11-06', @campaigntype = 'Public', @channeltype = 'Email'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -255,11 +579,11 @@
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
               SQLTask:SqlStatementSource="EXEC etl.EmailResponse_load_DimEmail_Source_DimEmail @ClientDB = ?, @TblName = ?, @EmailField = ?, @RunTime = ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ParameterBinding
                 SQLTask:ParameterName="0"
-                SQLTask:DtsVariableName="$Project::ClientName"
+                SQLTask:DtsVariableName="User::DBName"
                 SQLTask:ParameterDirection="Input"
                 SQLTask:DataType="129"
                 SQLTask:ParameterSize="-1" />
@@ -285,6 +609,26 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
+          DTS:refId="Package\Load email schema\Load DimEmailLists"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{88ec090c-3223-4144-9d74-b857b0aa29ce}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Load DimEmailLists"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="SqlStatementSource">"Exec " +  @[User::vLoadEmailListSproc]  + " @clientdb = '" + @[User::DBName]  + "',
+@loadTblName = '" +   @[User::vSubscriptionTblName] +"', @runtime = '" + (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "'"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="Exec  @clientdb = 'SSB_CLIENT_DEV',&#xA;@loadTblName = 'ods.vw_Load_Adobe', @runtime = '2018-11-06'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Load email schema\Load FactCampaignEmailDetail"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
@@ -295,15 +639,15 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCEDSproc] + " @ClientDB = '" + @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCEDSproc] + " @ClientDB = '" +  @[User::DBName]  + "',
                                            @odsTableName = '" + @[User::vODSFCEDTblName] + "',
                                            @campaignType = '" + @[User::vCampaignType] + "',
                                            @runTime = '" + (DT_WSTR, 14)(DT_DBDATE)  @[User::vRunTime] +"',
 			@tmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Zeta_Load_FactCampaignEmailDetail @ClientDB = 'EBGPROD',&#xA;                                           @odsTableName = 'ods.zeta_response_public',&#xA;                                           @campaignType = 'Public',&#xA;                                           @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@tmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Zeta_Load_FactCampaignEmailDetail @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                           @odsTableName = 'ods.zeta_response_public',&#xA;                                           @campaignType = 'Public',&#xA;                                           @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@tmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -317,14 +661,14 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSSproc] + " @ClientDB = '" +  @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSSproc] + " @ClientDB = '" + @[User::DBName]  + "',
                                           @campaignType = '" + @[User::vCampaignType] + "',
                                             @runTime = '" +  (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "',
 			@TmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegment @ClientDB = 'EBGPROD',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegment @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -338,14 +682,14 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSLSSproc] + " @ClientDB = '" +  @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSLSSproc] + " @ClientDB = '" +  @[User::DBName]   + "',
                                           @campaignType = '" + @[User::vCampaignType] + "',
                                             @runTime = '" +  (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "',
 			@TmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegmentLinkSummary @ClientDB = 'EBGPROD',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegmentLinkSummary @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -359,14 +703,14 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSSSproc] + " @ClientDB = '" +  @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSSSproc] + " @ClientDB = '" +  @[User::DBName]   + "',
                                           @campaignType = '" + @[User::vCampaignType] + "',
                                             @runTime = '" +  (DT_WSTR, 14)(DT_DBDATE)  @[User::vRunTime] + "',
 			@TmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegmentSummary @ClientDB = 'EBGPROD',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSegmentSummary @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -380,14 +724,14 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSumSproc] + " @ClientDB = '" +  @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFCSumSproc] + " @ClientDB = '" +  @[User::DBName]   + "',
                                           @campaignType = '" + @[User::vCampaignType] + "',
                                             @runTime = '" +  (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "',
 			@TmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSummary @ClientDB = 'EBGPROD',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Load_FactCampaignSummary @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -401,14 +745,34 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFESSproc] + " @ClientDB = '" +  @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"EXEC " + @[User::vLoadFESSproc] + " @ClientDB = '" +  @[User::DBName]    + "',
                                           @campaignType = '" + @[User::vCampaignType] + "',
                                             @runTime = '" +  (DT_WSTR, 14)(DT_DBDATE)  @[User::vRunTime] + "',
 			@TmpTblName = '" + @[User::vTmpTableName] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="EXEC etl.Load_FactEmailSummary @ClientDB = 'EBGPROD',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-10-10',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="EXEC etl.Load_FactEmailSummary @ClientDB = 'SSB_CLIENT_DEV',&#xA;                                          @campaignType = 'Public',&#xA;                                            @runTime = '2018-11-06',&#xA;&#x9;&#x9;&#x9;@TmpTblName = 'etl.tmp_zeta_responses'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load email schema\Load Lists"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{70f84d13-eee0-4b74-b18e-176a3fb9a120}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Load Lists"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="SqlStatementSource">"Exec " + @[User::vLoadListsSproc] + " @clientdb = '" + @[User::DBName]  + "',
+@odsTblName = '" + @[User::vListTblName] +"', @runtime = '" + (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "'"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="Exec  @clientdb = 'SSB_CLIENT_DEV',&#xA;@odsTblName = 'ods.vw_Load_email_DimList__Adobe', @runtime = '2018-11-06'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -423,12 +787,38 @@
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:PropertyExpression
-            DTS:Name="SqlStatementSource">"Exec " + @[User::vLoadSegmentSproc] + " @clientdb = '" + @[$Project::DW_InitialCatalog] + "',
+            DTS:Name="SqlStatementSource">"Exec " + @[User::vLoadSegmentSproc] + " @clientdb = '" + @[User::DBName]  + "',
 @odsTblName = '" + @[User::vODSSegmentTblName] +"', @runtime = '" + (DT_WSTR, 14) (DT_DBDATE) @[User::vRunTime] + "'"</DTS:PropertyExpression>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{84ac641d-632a-4d27-8371-716f127f4aef}"
-              SQLTask:SqlStatementSource="Exec etl.Zeta_Load_Segments @clientdb = 'EBGPROD',&#xA;@odsTblName = 'ods.zeta_response_public', @runtime = '2018-10-10'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+              SQLTask:SqlStatementSource="Exec etl.Zeta_Load_Segments @clientdb = 'SSB_CLIENT_DEV',&#xA;@odsTblName = 'ods.zeta_response_public', @runtime = '2018-11-06'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Load email schema\Log Last Run"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{012AE680-1FBE-4119-8392-4EA48781741A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Last Run"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:PropertyExpression
+            DTS:Name="SqlStatementSource">"Update config.EmailModelLoadTracking
+set LastRunDateTime = '" + (DT_WSTR, 25) (DT_DBTIMESTAMP) @[System::StartTime] + "'
+where EmailModelLoadTenantID = '" +  @[$Project::EmailModelLoadTenantId] + "'
+
+IF (@@Rowcount = 0)
+Begin
+ Insert into config.EmailModelLoadTracking (EmailModelLoadTenantId, LastRunDateTime) values ('" + @[$Project::EmailModelLoadTenantId] + "', '" + (DT_WSTR, 25) (DT_DBTIMESTAMP) @[System::StartTime] + "')
+End"</DTS:PropertyExpression>
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{EE70D542-5A81-4106-B110-7BCE506C5130}"
+              SQLTask:SqlStatementSource="Update config.EmailModelLoadTracking&#xA;set LastRunDateTime = '2018-11-16 07:35:18'&#xA;where EmailModelLoadTenantID = '17448A73-3C3F-47C8-8F95-C2FCA66C5D24'&#xA;&#xA;IF (@@Rowcount = 0)&#xA;Begin&#xA; Insert into config.EmailModelLoadTracking (EmailModelLoadTenantId, LastRunDateTime) values ('17448A73-3C3F-47C8-8F95-C2FCA66C5D24', '2018-11-16 07:35:18')&#xA;End" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -449,6 +839,22 @@
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 1"
           DTS:To="Package\Load email schema\Load FactEmailSummary" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 10]"
+          DTS:CreationName=""
+          DTS:DTSID="{04B10E44-3986-4794-B761-8D57575BA6BE}"
+          DTS:From="Package\Load email schema\Load DimEmailLists"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 10"
+          DTS:To="Package\Load email schema\Load FactCampaignEmailDetail" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 11]"
+          DTS:CreationName=""
+          DTS:DTSID="{1A019306-68B5-437E-8A3A-BA79543F30DE}"
+          DTS:From="Package\Load email schema\Apply Bounces to DimEmail"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 11"
+          DTS:To="Package\Load email schema\Log Last Run" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 2]"
           DTS:CreationName=""
@@ -484,11 +890,11 @@
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 6]"
           DTS:CreationName=""
-          DTS:DTSID="{59B24255-716D-4CD5-99EF-39996531C8B9}"
+          DTS:DTSID="{9FC1594C-A38C-466E-9C08-F672B1AB4140}"
           DTS:From="Package\Load email schema\Load Segments"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 6"
-          DTS:To="Package\Load email schema\Load FactCampaignEmailDetail" />
+          DTS:To="Package\Load email schema\Load Lists" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 7]"
           DTS:CreationName=""
@@ -505,9 +911,54 @@
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 8"
           DTS:To="Package\Load email schema\Apply Bounces to DimEmail" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Load email schema.PrecedenceConstraints[Constraint 9]"
+          DTS:CreationName=""
+          DTS:DTSID="{182F0085-D11A-4A64-B81E-7675B61DF4FD}"
+          DTS:From="Package\Load email schema\Load Lists"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 9"
+          DTS:To="Package\Load email schema\Load DimEmailLists" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Run Setup Script"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{641653D0-063C-43D0-BFF5-13284E2BDEF4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Run Setup Script"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2017 RC1; © 2017 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"Exec " +  @[User::vSetupScript] + " @clientdb = '" +  @[User::DBName] + "', @RunSetup = " +  (DT_WSTR, 1) @[User::vRunSetupScript]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{23C0F567-BFE3-415D-A1AC-21520C205C90}"
+          SQLTask:SqlStatementSource="Exec etl.Adobe_Setup @clientdb = 'SSB_CLIENT_DEV', @RunSetup = 0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
   </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{E5824D3C-34BB-44ED-B550-42BEC672AFC9}"
+      DTS:From="Package\Get Parameters"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Run Setup Script" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{914FF27F-CC11-4541-9420-7D2A7C40A7E2}"
+      DTS:From="Package\Run Setup Script"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Load email schema" />
+  </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
 <!--If you manually edit this section and make a mistake, you can delete it. -->
@@ -521,9 +972,13 @@
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
+          Size="153,42"
+          Id="Package\Get Parameters"
+          TopLeft="322.5,64.7291663451533" />
+        <NodeLayout
           Size="208.5,42"
           Id="Package\Load email schema\Apply Bounces to DimEmail"
-          TopLeft="305.333333333333,668.847219681506" />
+          TopLeft="299.333333333333,809.138885651339" />
         <NodeLayout
           Size="158.5,42"
           Id="Package\Load email schema\Load Campaigns"
@@ -533,55 +988,71 @@
           Id="Package\Load email schema\Load DimEmail &amp; Source_DimEmail"
           TopLeft="8.5,31.7291680563036" />
         <NodeLayout
+          Size="172,42"
+          Id="Package\Load email schema\Load DimEmailLists"
+          TopLeft="384.5,248.138888944496" />
+        <NodeLayout
           Size="227,42"
           Id="Package\Load email schema\Load FactCampaignEmailDetail"
-          TopLeft="323.375,177.916666316902" />
+          TopLeft="317.125,318.208332286733" />
         <NodeLayout
           Size="234,42"
           Id="Package\Load email schema\Load FactCampaignSegment"
-          TopLeft="324.125,334.760416044492" />
+          TopLeft="318.125,475.052082014322" />
+        <NodeLayout
+          Size="280,42"
+          Id="Package\Load email schema\Load FactCampaignSegmentLinkSummary"
+          TopLeft="298.5,741.86805315878" />
         <NodeLayout
           Size="260.5,42"
           Id="Package\Load email schema\Load FactCampaignSegmentSummary"
-          TopLeft="289.375,423.666667689052" />
+          TopLeft="283.375,563.958333658882" />
         <NodeLayout
           Size="218.5,42"
           Id="Package\Load email schema\Load FactCampaignSummary"
-          TopLeft="301.375,526.239581760071" />
+          TopLeft="295.375,666.531247729901" />
         <NodeLayout
           Size="197,42"
           Id="Package\Load email schema\Load FactEmailSummary"
-          TopLeft="341.625,260.552083079754" />
+          TopLeft="335.875,400.572915717596" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Load email schema\Load Lists"
+          TopLeft="370,177.180555963614" />
         <NodeLayout
           Size="158.5,42"
           Id="Package\Load email schema\Load Segments"
-          TopLeft="370.25,92.9062492554075" />
+          TopLeft="369.25,92.6354159234194" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Load email schema\Log Last Run"
+          TopLeft="613.5,848.291663612963" />
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint]"
           TopLeft="382.333333333333,56.2604149467722">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="67.1666666666667,36.6458343086353"
+              EndConnector="66.1666666666667,36.3750009766472"
               Start="0,0"
-              End="67.1666666666667,29.1458343086353">
+              End="66.1666666666667,28.8750009766472">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,10.8780713932623" />
+                    End="0,10.7681140754658" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,10.8780713932623"
-                    Point2="0,14.8780713932623"
-                    Point3="4,14.8780713932623" />
+                    Point1="0,10.7681140754658"
+                    Point2="0,14.7681140754658"
+                    Point3="4,14.7681140754658" />
                   <mssgle:LineSegment
-                    End="63.1666666666667,14.8780713932623" />
+                    End="62.1666666666667,14.7681140754658" />
                   <mssgle:CubicBezierSegment
-                    Point1="63.1666666666667,14.8780713932623"
-                    Point2="67.1666666666667,14.8780713932623"
-                    Point3="67.1666666666667,18.8780713932623" />
+                    Point1="62.1666666666667,14.7681140754658"
+                    Point2="66.1666666666667,14.7681140754658"
+                    Point3="66.1666666666667,18.7681140754658" />
                   <mssgle:LineSegment
-                    End="67.1666666666667,29.1458343086353" />
+                    End="66.1666666666667,28.8750009766472" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -592,18 +1063,86 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 1]"
-          TopLeft="438.5,219.916666316902">
+          TopLeft="432.5,360.208332286733">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,40.6354167628517"
+              EndConnector="0,40.3645834308631"
               Start="0,0"
-              End="0,33.1354167628517">
+              End="0,32.8645834308631">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,33.1354167628517" />
+                    End="0,32.8645834308631" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load email schema.PrecedenceConstraints[Constraint 10]"
+          TopLeft="470.5,290.138888944496">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-39.875,28.0694433422369"
+              Start="0,0"
+              End="-39.875,20.5694433422369">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.0347216711185" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.0347216711185"
+                    Point2="0,14.0347216711185"
+                    Point3="-4,14.0347216711185" />
+                  <mssgle:LineSegment
+                    End="-35.875,14.0347216711185" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-35.875,14.0347216711185"
+                    Point2="-39.875,14.0347216711185"
+                    Point3="-39.875,18.0347216711185" />
+                  <mssgle:LineSegment
+                    End="-39.875,20.5694433422369" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load email schema.PrecedenceConstraints[Constraint 11]"
+          TopLeft="507.833333333333,830.138885651339">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="105.666666666667,39.1527779616245"
+              Start="0,0"
+              End="98.166666666667,39.1527779616245">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="48.8333333333335,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48.8333333333335,0"
+                    Point2="52.8333333333335,0"
+                    Point3="52.8333333333335,4" />
+                  <mssgle:LineSegment
+                    End="52.8333333333335,35.1527779616245" />
+                  <mssgle:CubicBezierSegment
+                    Point1="52.8333333333335,35.1527779616245"
+                    Point2="52.8333333333335,39.1527779616245"
+                    Point3="56.8333333333335,39.1527779616245" />
+                  <mssgle:LineSegment
+                    End="98.166666666667,39.1527779616245" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -614,18 +1153,18 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 2]"
-          TopLeft="440.625,302.552083079754">
+          TopLeft="434.75,442.572915717596">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,32.2083329647373"
+              EndConnector="0,32.479166296726"
               Start="0,0"
-              End="0,24.7083329647373">
+              End="0,24.979166296726">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.7083329647373" />
+                    End="0,24.979166296726" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -636,7 +1175,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 3]"
-          TopLeft="419.625,465.666667689052">
+          TopLeft="413.625,605.958333658882">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -647,17 +1186,17 @@
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,26.2864570355094" />
+                    End="0,26.2864570355093" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,26.2864570355094"
-                    Point2="0,30.2864570355094"
-                    Point3="-4,30.2864570355094" />
+                    Point1="0,26.2864570355093"
+                    Point2="0,30.2864570355093"
+                    Point3="-4,30.2864570355093" />
                   <mssgle:LineSegment
-                    End="-5,30.2864570355094" />
+                    End="-5,30.2864570355093" />
                   <mssgle:CubicBezierSegment
-                    Point1="-5,30.2864570355094"
-                    Point2="-9,30.2864570355094"
-                    Point3="-9,34.2864570355094" />
+                    Point1="-5,30.2864570355093"
+                    Point2="-9,30.2864570355093"
+                    Point3="-9,34.2864570355093" />
                   <mssgle:LineSegment
                     End="-9,53.0729140710189" />
                 </mssgle:SegmentCollection>
@@ -670,7 +1209,7 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 4]"
-          TopLeft="441.125,376.760416044492">
+          TopLeft="435.125,517.052082014322">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -738,30 +1277,30 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 6]"
-          TopLeft="449.5,134.906249255407">
+          TopLeft="448.5,134.635415923419">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-12.625,43.0104170614949"
+              EndConnector="-15,42.5451400401941"
               Start="0,0"
-              End="-12.625,35.5104170614949">
+              End="-15,35.0451400401941">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,17.5052085307474" />
+                    End="0,17.272570020097" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,17.5052085307474"
-                    Point2="0,21.5052085307474"
-                    Point3="-4,21.5052085307474" />
+                    Point1="0,17.272570020097"
+                    Point2="0,21.272570020097"
+                    Point3="-4,21.272570020097" />
                   <mssgle:LineSegment
-                    End="-8.625,21.5052085307474" />
+                    End="-11,21.272570020097" />
                   <mssgle:CubicBezierSegment
-                    Point1="-8.625,21.5052085307474"
-                    Point2="-12.625,21.5052085307474"
-                    Point3="-12.625,25.5052085307474" />
+                    Point1="-11,21.272570020097"
+                    Point2="-15,21.272570020097"
+                    Point3="-15,25.272570020097" />
                   <mssgle:LineSegment
-                    End="-12.625,35.5104170614949" />
+                    End="-15,35.0451400401941" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -770,13 +1309,9 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="280,42"
-          Id="Package\Load email schema\Load FactCampaignSegmentLinkSummary"
-          TopLeft="304.5,601.57638718895" />
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 7]"
-          TopLeft="410.625,568.239581760071">
+          TopLeft="404.625,708.531247729901">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -810,30 +1345,64 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load email schema.PrecedenceConstraints[Constraint 8]"
-          TopLeft="444.5,643.57638718895">
+          TopLeft="438.5,783.868053158781">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-34.916666666667,25.2708324925559"
+              EndConnector="-34.916666666667,25.2708324925561"
               Start="0,0"
-              End="-34.916666666667,17.7708324925559">
+              End="-34.916666666667,17.7708324925561">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,8.63541624627794" />
+                    End="0,8.63541624627806" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,8.63541624627794"
-                    Point2="0,12.6354162462779"
-                    Point3="-4,12.6354162462779" />
+                    Point1="0,8.63541624627806"
+                    Point2="0,12.6354162462781"
+                    Point3="-4,12.6354162462781" />
                   <mssgle:LineSegment
-                    End="-30.916666666667,12.6354162462779" />
+                    End="-30.916666666667,12.6354162462781" />
                   <mssgle:CubicBezierSegment
-                    Point1="-30.916666666667,12.6354162462779"
-                    Point2="-34.916666666667,12.6354162462779"
-                    Point3="-34.916666666667,16.6354162462779" />
+                    Point1="-30.916666666667,12.6354162462781"
+                    Point2="-34.916666666667,12.6354162462781"
+                    Point3="-34.916666666667,16.6354162462781" />
                   <mssgle:LineSegment
-                    End="-34.916666666667,17.7708324925559" />
+                    End="-34.916666666667,17.7708324925561" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load email schema.PrecedenceConstraints[Constraint 9]"
+          TopLeft="433.5,219.180555963614">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="18.75,28.9583329808822"
+              Start="0,0"
+              End="18.75,21.4583329808822">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.4791664904411" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.4791664904411"
+                    Point2="0,14.4791664904411"
+                    Point3="4,14.4791664904411" />
+                  <mssgle:LineSegment
+                    End="14.75,14.4791664904411" />
+                  <mssgle:CubicBezierSegment
+                    Point1="14.75,14.4791664904411"
+                    Point2="18.75,14.4791664904411"
+                    Point3="18.75,18.4791664904411" />
+                  <mssgle:LineSegment
+                    End="18.75,21.4583329808822" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -845,10 +1414,70 @@
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="844,868"
-          Size="844,911"
+          PanelSize="844,946"
+          Size="844,989"
           Id="Package\Load email schema"
           TopLeft="179.666666666667,200.263891476242" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Run Setup Script"
+          TopLeft="524,126.916666155474" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="475.5,85.7291663451533">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="48.5,62.1874998103207"
+              Start="0,0"
+              End="41,62.1874998103207">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="20.25,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20.25,0"
+                    Point2="24.25,0"
+                    Point3="24.25,4" />
+                  <mssgle:LineSegment
+                    End="24.25,58.1874998103207" />
+                  <mssgle:CubicBezierSegment
+                    Point1="24.25,58.1874998103207"
+                    Point2="24.25,62.1874998103207"
+                    Point3="28.25,62.1874998103207" />
+                  <mssgle:LineSegment
+                    End="41,62.1874998103207" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="602.333333333333,168.916666155474">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,31.347225320768"
+              Start="0,0"
+              End="0,23.847225320768">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.847225320768" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
